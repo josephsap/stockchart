@@ -1,0 +1,26 @@
+
+  // .form-styles {
+  //   ${theme.breakpoints.up('md')} {
+  //     display: flex;
+  //   }
+  // }
+
+.searchInput {
+  margin-top: 2rem;
+  // ${theme.breakpoints.up('md')} {
+  //   padding-right: ${theme.spacing(6)};
+  //   margin: ${theme.spacing(6)} 0;
+  // }
+}
+
+.searchButton {
+  width: 100%;
+  margin: 3rem 0;
+  padding: 1.6rem 0;
+  // ${theme.breakpoints.up('md')} {
+  //   max-height: 55px;
+  //   width: 200px;
+  //   margin: ${theme.spacing(6)} 0;
+  // }
+}
+
