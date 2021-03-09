@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Grid, TextField, Button } from '@material-ui/core';
+import { Grid, TextField, Button, Typography } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import styles from './SearchForm.module.scss';
@@ -7,13 +7,12 @@ import styles from './SearchForm.module.scss';
 const validationSchema = yup.object({
   tickerSearch: yup
     .string('Enter a ticker')
-    .min(4)
+    .min(1)
     .required('A ticker symbol is required'),
-  dateSearch: yup
-    .string('Enter a date')
+  dateSearch: yup.string('Enter a date'),
 });
 
-const SearchForm = ({ handleSearchSubmit }) => {
+const SearchForm = ({ handleSearchSubmit, buySellDate }) => {
   const formik = useFormik({
     initialValues: {
       tickerSearch: '',
@@ -36,31 +35,43 @@ const SearchForm = ({ handleSearchSubmit }) => {
             label='Search Tickers'
             value={formik.values.tickerSearch}
             onChange={formik.handleChange}
-            error={formik.touched.tickerSearch && Boolean(formik.errors.tickerSearch)}
-            helperText={formik.touched.tickerSearch && formik.errors.tickerSearch}
+            error={
+              formik.touched.tickerSearch && Boolean(formik.errors.tickerSearch)
+            }
+            helperText={
+              formik.touched.tickerSearch && formik.errors.tickerSearch
+            }
           />
-          <TextField
-            className={styles.searchInput}
-            variant='outlined'
-            id='dateSearch'
-            name='dateSearch'
-            label='Date'
-            type="date"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={formik.values.dateSearch}
-            onChange={formik.handleChange}
-            error={formik.touched.dateSearch && Boolean(formik.errors.dateSearch)}
-            helperText={'Pick a date after Jan. 2, and no weekends or holidays, 2017 only'}
-          />
+          {buySellDate ? (
+            <Typography variant='body1'>{buySellDate}</Typography>
+          ) : (
+            <TextField
+              className={styles.searchInput}
+              variant='outlined'
+              id='dateSearch'
+              name='dateSearch'
+              label='Date'
+              type='date'
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={formik.values.dateSearch}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.dateSearch && Boolean(formik.errors.dateSearch)
+              }
+              helperText={
+                'Pick a date after Jan. 2, and no weekends or holidays, 2017 only'
+              }
+            />
+          )}
           <Button
             color='primary'
             variant='contained'
             type='submit'
             className={styles.searchButton}
           >
-            Submit
+            Get the price
           </Button>
         </form>
       </Grid>
