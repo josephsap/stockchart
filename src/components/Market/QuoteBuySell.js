@@ -39,7 +39,7 @@ const QuoteBuySell = (props) => {
       ticker: searchResults.Name,
       shareQuantity,
       buyOrSell,
-      orderTotal,
+      orderTotal: orderTotal.toFixed(2),
     };
 
     setOrderData(orderInfo);

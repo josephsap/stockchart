@@ -50,7 +50,7 @@ const BuySellConfirmDialog = ({ open, handleClose, orderData }) => {
             <DialogContentText>Procesing order...</DialogContentText>
           ) : (
             <DialogContentText>
-              {`You are placing a ${buyOrSell} order for ${shareQuantity} shares of ${ticker} at ${price} per share for a total of ${orderTotal}. Please confirm.`}
+              {`You are placing a ${buyOrSell} order for ${shareQuantity} shares of ${ticker} at $${price} per share for a total of $${orderTotal}. Please confirm.`}
             </DialogContentText>
           )}
         </DialogContent>

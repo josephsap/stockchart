@@ -1,19 +1,35 @@
 import { useState } from 'react';
-import { Typography, Box } from '@material-ui/core';
-import StockChart from './StockChart';
-import Account from './Account/Account';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Container } from '@material-ui/core';
+import Portfolio from './Portfolio/Portfolio';
 import Market from './Market/Market';
 
 const App = () => {
   const [balance, setBalance] = useState(100000);
 
   return (
-    <Box m={5}>
-      <Typography variant='h1'>The App</Typography>
-      <Market balance={balance} />
-      {/* <Account /> */}
-      {/* <StockChart /> */}
-    </Box>
+    <Router>
+      <Container maxWidth='lg'>
+        <nav>
+          <ul>
+            <li>
+              <Link to='/'>Buy/Sell</Link>
+            </li>
+            <li>
+              <Link to='/portfolio'>Portfolio</Link>
+            </li>
+          </ul>
+        </nav>
+        <Switch>
+          <Route path='/' exact>
+            <Market balance={balance} />
+          </Route>
+          <Route path='/portfolio' exact>
+            <Portfolio balance={balance} />
+          </Route>
+        </Switch>
+      </Container>
+    </Router>
   );
 };
 

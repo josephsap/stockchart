@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { format } from 'date-fns';
 import SearchForm from './SearchForm';
 import QuoteBuySell from './QuoteBuySell';
@@ -44,7 +44,7 @@ const Market = (props) => {
   };
 
   return (
-    <Container maxWidth='lg'>
+    <Box>
       <SearchForm
         handleSearchSubmit={handleSearchSubmit}
         buySellDate={buySellDate}
@@ -52,7 +52,7 @@ const Market = (props) => {
       {Object.keys(searchResults).length > 0 && (
         <QuoteBuySell searchResults={searchResults} {...props} />
       )}
-    </Container>
+    </Box>
   );
 };
 
