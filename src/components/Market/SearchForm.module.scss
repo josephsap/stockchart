@@ -1,11 +1,19 @@
-// .form-styles {
-//   ${theme.breakpoints.up('md')} {
-//     display: flex;
-//   }
-// }
+.formStyles {
+  .MuiTextField-root {
+    margin-bottom: 1.5rem;
+  }
+
+  button {
+    margin-top: 2rem;
+  }
+}
+
+.dateText {
+  margin: 2rem 0 !important;
+}
 
 .searchInput {
-  margin-top: 2rem;
+  margin-top: 2rem !important;
   // ${theme.breakpoints.up('md')} {
   //   padding-right: ${theme.spacing(6)};
   //   margin: ${theme.spacing(6)} 0;

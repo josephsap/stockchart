@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Typography, Box, Grid, TextField, Button } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import BuyConfirmDialog from '../common/BuyConfirmDialog';
+import BuyConfirmDialog from './BuyConfirmDialog';
 import { useSelector } from 'react-redux';
+import styles from './BuyQuote.module.scss';
 
 const validationSchema = yup.object({
   shareQuantity: yup
@@ -54,48 +55,48 @@ const BuyQuote = (props) => {
   });
 
   return (
-    <Box mt={5}>
-      <Grid container>
-        <BuyConfirmDialog
-          open={open}
-          handleClose={handleClose}
-          orderData={orderData}
-        />
-        <Grid item xs={12} md={4}>
-          <Typography variant='body1'>
-            Your account balance: {balance}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Typography variant='body1'>{searchResults.Name}</Typography>
-          <Typography variant='body1'>
-            Price: ${searchResults.close} per share
-          </Typography>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <form onSubmit={formik.handleSubmit}>
-            <TextField
-              fullWidth
-              // className={styles.searchInput}
-              variant='outlined'
-              id='shareQuantity'
-              name='shareQuantity'
-              label='Number of shares'
-              value={formik.values.shareQuantity}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.shareQuantity &&
-                Boolean(formik.errors.shareQuantity)
-              }
-              helperText={
-                formik.touched.shareQuantity && formik.errors.shareQuantity
-              }
-            />
-            <Button color='primary' variant='contained' type='submit'>
-              Submit
-            </Button>
-          </form>
-        </Grid>
+    <Box ml={3} mr={3} className={styles.searchResultsContainer}>
+      <BuyConfirmDialog
+        open={open}
+        handleClose={handleClose}
+        orderData={orderData}
+      />
+      <Grid item xs={12} md={8} className={styles.balance}>
+        <Typography variant='h4'>
+          Your account balance: ${balance.toFixed(2)}
+        </Typography>
+      </Grid>
+      <Grid item xs={12} md={8}>
+        <Typography variant='h5' gutterBottom>
+          {searchResults.Name}
+        </Typography>
+        <Typography variant='body1' gutterBottom>
+          Price: ${searchResults.close} per share
+        </Typography>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <form onSubmit={formik.handleSubmit} className={styles.buyForm}>
+          <TextField
+            fullWidth
+            // className={styles.searchInput}
+            variant='outlined'
+            id='shareQuantity'
+            name='shareQuantity'
+            label='Number of shares'
+            value={formik.values.shareQuantity}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.shareQuantity &&
+              Boolean(formik.errors.shareQuantity)
+            }
+            helperText={
+              formik.touched.shareQuantity && formik.errors.shareQuantity
+            }
+          />
+          <Button color='primary' variant='contained' type='submit' fullWidth>
+            Submit
+          </Button>
+        </form>
       </Grid>
     </Box>
   );

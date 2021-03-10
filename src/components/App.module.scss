@@ -1,0 +1,29 @@
+.topBar {
+  background-color: #f3f4f7 !important;
+  margin-bottom: 5.5rem;
+}
+
+.buttonWrapper {
+  margin: 1rem 24px;
+  display: flex;
+  align-items: baseline;
+  button {
+    &:first-of-type {
+      margin-left: auto;
+    }
+    margin-right: 1rem;
+  }
+  a {
+    color: #fff;
+    text-decoration: none;
+    &:hover {
+      color: #d0d0d0;
+    }
+  }
+  h1 {
+    margin-right: 3rem;
+    a {
+      color: inherit;
+    }
+  }
+}

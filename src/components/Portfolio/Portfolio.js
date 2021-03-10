@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Typography, Box, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import StockChart from '../StockChart';
+import StockChart from './StockChart';
 import SellDialog from './SellDialog';
+import styles from './Portfolio.module.scss';
 import {
   setPortfolio,
   selectPortfolio,
 } from '../../redux/reducers/portfolioSlice';
 
 const Portfolio = () => {
-  // const [portfolioData, setPortfolioData] = useState([]);
   const balance = useSelector((state) => state.balance.value);
   const [portfolioItemData, setPortfolioItemData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -47,7 +47,6 @@ const Portfolio = () => {
       try {
         const portfolio = await fetch('http://localhost:3001/portfolio');
         const portfolioJson = await portfolio.json();
-        // setPortfolioData(portfolioJson);
         dispatch(setPortfolio(portfolioJson));
       } catch (err) {
         console.error(err);
@@ -60,33 +59,38 @@ const Portfolio = () => {
       <Typography variant='h2' gutterBottom>
         Your Portfolio
       </Typography>
-      <Typography
-        variant='h4'
-        gutterBottom
-      >{`Balance: $${balance}`}</Typography>
-      <Grid container>
+      <Typography variant='h4' gutterBottom>{`Balance: $${balance.toFixed(
+        2
+      )}`}</Typography>
+      <Grid container spacing={5}>
         <Grid item xs={12} md={3}>
           {portfolioData.length > 0 ? (
             portfolioData.map((stock) => (
-              <Box key={stock.id}>
+              <Box
+                mt={5}
+                mb={4}
+                key={stock.id}
+                className={styles.portfolioItem}
+              >
                 <Box
                   mt={3}
-                  className='portfolioItem'
+                  mb={2}
+                  className={styles.portfolioClickable}
                   onClick={(e) => handlePortfolioItemClick(e, stock.ticker)}
                 >
-                  <Typography variant='body1'>
-                    {stock.ticker}: {stock.shareQuantity}{' '}
+                  <Typography variant='body1' gutterBottom>
+                    <b>{stock.ticker}</b>: {stock.shareQuantity}{' '}
                     {stock.shareQuantity > 1 ? 'shares' : 'share'}
                   </Typography>
-                  <Typography variant='body1'>
-                    Purchase price per share: ${stock.price}
+                  <Typography variant='body1' gutterBottom>
+                    <b>Purchase price per share:</b> ${stock.price}
                   </Typography>
-                  <Typography variant='body1'>
-                    Total: ${stock.orderTotal}
+                  <Typography variant='body1' gutterBottom>
+                    <b>Total:</b> ${stock.orderTotal}
                   </Typography>
                 </Box>
                 <Button
-                  variant='outlined'
+                  variant='contained'
                   color='primary'
                   onClick={() => handleSell({ stock })}
                 >
@@ -107,7 +111,7 @@ const Portfolio = () => {
           ) : (
             <>
               {portfolioData.length > 0 && (
-                <Typography variant='body1'>
+                <Typography variant='body1' style={{ textAlign: 'center' }}>
                   Click a portfolio item to see the chart data.
                 </Typography>
               )}

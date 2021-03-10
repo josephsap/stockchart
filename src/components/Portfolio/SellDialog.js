@@ -12,7 +12,9 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { incrementByAmount } from '../../redux/reducers/balanceSlice';
-import { formatDate } from '../../utils';
+import { sellAllSharesOfStock } from '../../redux/reducers/portfolioSlice';
+import { formatDate } from '../../lib/utils';
+import styles from './SellDialog.module.scss';
 
 const SellDialog = ({ open, handleClose, stockToSell }) => {
   const [sellPrice, setSellPrice] = useState(null);
@@ -25,7 +27,10 @@ const SellDialog = ({ open, handleClose, stockToSell }) => {
         'A quantity is required. It must be less than or equal to the amount of shares owned.'
       )
       .min(1)
-      .max(stockToSell ? stockToSell.stock.shareQuantity : null),
+      .max(
+        stockToSell ? stockToSell.stock.shareQuantity : null,
+        'You cannot sell more shares than you have'
+      ),
     dateSearch: yup.string('Enter a date to sell').required(),
   });
 
@@ -40,12 +45,18 @@ const SellDialog = ({ open, handleClose, stockToSell }) => {
 
   const handleSellSubmit = async (values) => {
     const { shareQuantity } = values;
-    console.log(values.shareQuantity, 'valsss', shareQuantity);
 
     // updating total. using buy price * numShares
     const newTotal =
       (stockToSell.stock.shareQuantity - shareQuantity) *
       stockToSell.stock.price;
+
+    const newShareQty = stockToSell.stock.shareQuantity - shareQuantity;
+    if (isNaN(newShareQty)) {
+      if (newShareQty < 0) {
+        return false;
+      }
+    }
 
     try {
       const results = await fetch(
@@ -56,7 +67,10 @@ const SellDialog = ({ open, handleClose, stockToSell }) => {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ shareQuantity, orderTotal: newTotal }),
+          body: JSON.stringify({
+            shareQuantity: newShareQty,
+            orderTotal: newTotal,
+          }),
         }
       );
       const content = await results.json();
@@ -65,6 +79,22 @@ const SellDialog = ({ open, handleClose, stockToSell }) => {
           const proceeds = sellPrice * shareQuantity;
           dispatch(incrementByAmount(proceeds));
           handleClose(false);
+
+          // delete item from portfolio if no shares
+          if (content.shareQuantity === 0) {
+            dispatch(sellAllSharesOfStock(content));
+            try {
+              await fetch(`http://localhost:3001/portfolio/${content.id}`, {
+                method: 'DELETE',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                },
+              });
+            } catch (error) {
+              console.error(error);
+            }
+          }
         }
       }
     } catch (error) {
@@ -100,9 +130,12 @@ const SellDialog = ({ open, handleClose, stockToSell }) => {
               {stockToSell.stock.ticker}: {stockToSell.stock.shareQuantity}{' '}
               shares owned
             </DialogContentText>
-            <form onSubmit={formik.handleSubmit}>
+            <form
+              onSubmit={formik.handleSubmit}
+              className={styles.sellDialogForm}
+            >
               <TextField
-                // className={styles.searchInput}
+                className={styles.shareInput}
                 variant='outlined'
                 id='shareQuantity'
                 name='shareQuantity'
@@ -121,6 +154,7 @@ const SellDialog = ({ open, handleClose, stockToSell }) => {
                 variant='outlined'
                 id='dateSearch'
                 name='dateSearch'
+                className={styles.dateSearch}
                 label='Date'
                 type='date'
                 InputLabelProps={{

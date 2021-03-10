@@ -27,9 +27,6 @@ const StockChart = ({ portfolioItemData }) => {
   const formattedData = formatDataForChart(portfolioItemData);
 
   const stockChartOptions = {
-    // chart: {
-    //   width: 900,
-    // },
     yAxis: [
       {
         height: '75%',
@@ -63,7 +60,11 @@ const StockChart = ({ portfolioItemData }) => {
 
   return (
     <Box mt={4}>
-      <Typography gutterBottom>{`${stockName} stock chart`}</Typography>
+      <Typography
+        variant='h4'
+        gutterBottom
+        style={{ textAlign: 'center' }}
+      >{`${stockName} stock chart`}</Typography>
       <HighchartsReact
         highcharts={Highcharts}
         constructorType='stockChart'
