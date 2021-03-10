@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Box } from '@material-ui/core';
-import { format } from 'date-fns';
+import { formatDate } from '../../utils';
 import SearchForm from './SearchForm';
-import QuoteBuySell from './QuoteBuySell';
+import BuyQuote from './BuyQuote';
 
 // http://localhost:3001/stockPrices?q=aapl&date=1/4/17
 // this one returns data for both tickers
@@ -20,17 +20,12 @@ const Market = (props) => {
   const handleSearchSubmit = async ({ tickerSearch, dateSearch }) => {
     setIsLoading(true);
 
-    // date-fns format was off by one day.
-    // fixing that with timezone reset.
-    const dateString = new Date(dateSearch);
-    const dateStringDate = new Date(
-      dateString.valueOf() + dateString.getTimezoneOffset() * 60 * 1000
-    );
-    const formattedDate = format(dateStringDate, 'M/d/yy');
-    setBuySellDate(formattedDate);
+    const formatted = formatDate(dateSearch);
+    setBuySellDate(formatted);
+
     try {
       const results = await fetch(
-        `http://localhost:3001/stockPrices?q=${tickerSearch}&date=${formattedDate}`
+        `http://localhost:3001/stockPrices?q=${tickerSearch}&date=${formatted}`
       );
       const resultsJSON = await results.json();
       // setSearchResults(searchResults => [...searchResults, resultsJSON[0]]);
@@ -50,7 +45,7 @@ const Market = (props) => {
         buySellDate={buySellDate}
       />
       {Object.keys(searchResults).length > 0 && (
-        <QuoteBuySell searchResults={searchResults} {...props} />
+        <BuyQuote searchResults={searchResults} {...props} />
       )}
     </Box>
   );

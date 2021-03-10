@@ -7,15 +7,17 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { decrementByAmount } from '../../redux/reducers/balanceSlice';
 
-const BuySellConfirmDialog = ({ open, handleClose, orderData }) => {
-  const { buyOrSell, orderTotal, shareQuantity, ticker, price } = orderData;
+const BuyConfirmDialog = ({ open, handleClose, orderData }) => {
+  const { orderTotal, shareQuantity, ticker, price } = orderData;
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const placeOrder = async () => {
     setIsLoading(true);
 
-    // buy order
     try {
       const results = await fetch('http://localhost:3001/portfolio', {
         method: 'POST',
@@ -29,6 +31,7 @@ const BuySellConfirmDialog = ({ open, handleClose, orderData }) => {
       if (content) {
         setIsLoading(false);
         handleClose(false);
+        dispatch(decrementByAmount(orderTotal));
       }
     } catch (error) {
       // setHasErrorSearch(true);
@@ -50,7 +53,7 @@ const BuySellConfirmDialog = ({ open, handleClose, orderData }) => {
             <DialogContentText>Procesing order...</DialogContentText>
           ) : (
             <DialogContentText>
-              {`You are placing a ${buyOrSell} order for ${shareQuantity} shares of ${ticker} at $${price} per share for a total of $${orderTotal}. Please confirm.`}
+              {`You are placing a buy order for ${shareQuantity} shares of ${ticker} at $${price} per share for a total of $${orderTotal}. Please confirm.`}
             </DialogContentText>
           )}
         </DialogContent>
@@ -67,4 +70,4 @@ const BuySellConfirmDialog = ({ open, handleClose, orderData }) => {
   );
 };
 
-export default BuySellConfirmDialog;
+export default BuyConfirmDialog;
