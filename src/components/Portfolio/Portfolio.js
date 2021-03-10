@@ -3,7 +3,7 @@ import { Grid, Typography, Box, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import StockChart from './StockChart';
-import SellDialog from './SellDialog';
+import SellDialogContainer from './SellDialogContainer';
 import styles from './Portfolio.module.scss';
 import {
   setPortfolio,
@@ -119,7 +119,7 @@ const Portfolio = () => {
           )}
         </Grid>
       </Grid>
-      <SellDialog
+      <SellDialogContainer
         open={open}
         handleClose={handleClose}
         stockToSell={stockToSell}
