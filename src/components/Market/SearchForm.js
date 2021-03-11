@@ -23,7 +23,11 @@ const SearchForm = ({ handleSearchSubmit, buySellDate }) => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className={styles.formStyles}>
+    <form
+      onSubmit={formik.handleSubmit}
+      className={styles.formStyles}
+      data-testid='searchStocksForm'
+    >
       <TextField
         fullWidth
         className={styles.searchInput}
@@ -39,7 +43,11 @@ const SearchForm = ({ handleSearchSubmit, buySellDate }) => {
         helperText={formik.touched.tickerSearch && formik.errors.tickerSearch}
       />
       {buySellDate ? (
-        <Typography variant='body1' className={styles.dateText}>
+        <Typography
+          variant='body1'
+          className={styles.dateText}
+          data-testid='buyDate'
+        >
           Chosen buy date: {buySellDate}
         </Typography>
       ) : (

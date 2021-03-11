@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Typography, Box, Grid, TextField, Button } from '@material-ui/core';
 import { useFormik } from 'formik';
@@ -12,9 +13,8 @@ const validationSchema = yup.object({
     .required('A quantity is required'),
 });
 
-const BuyQuote = (props) => {
+const BuyQuote = ({ searchResults }) => {
   const [open, setOpen] = useState(false);
-  const { searchResults } = props;
   const [orderData, setOrderData] = useState({});
 
   const balance = useSelector((state) => state.balance.value);
@@ -56,11 +56,13 @@ const BuyQuote = (props) => {
 
   return (
     <Box ml={3} mr={3} className={styles.searchResultsContainer}>
-      <BuyConfirmDialog
-        open={open}
-        handleClose={handleClose}
-        orderData={orderData}
-      />
+      {Object.keys(orderData).length > 0 && (
+        <BuyConfirmDialog
+          open={open}
+          handleClose={handleClose}
+          orderData={orderData}
+        />
+      )}
       <Grid item xs={12} md={8} className={styles.balance}>
         <Typography variant='h4'>
           Your account balance: ${balance.toFixed(2)}
@@ -78,7 +80,6 @@ const BuyQuote = (props) => {
         <form onSubmit={formik.handleSubmit} className={styles.buyForm}>
           <TextField
             fullWidth
-            // className={styles.searchInput}
             variant='outlined'
             id='shareQuantity'
             name='shareQuantity'
@@ -100,6 +101,18 @@ const BuyQuote = (props) => {
       </Grid>
     </Box>
   );
+};
+
+BuyQuote.propTypes = {
+  searchResults: PropTypes.shape({
+    Name: PropTypes.string.isRequired,
+    close: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    high: PropTypes.string.isRequired,
+    low: PropTypes.string.isRequired,
+    open: PropTypes.string.isRequired,
+    volume: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default BuyQuote;

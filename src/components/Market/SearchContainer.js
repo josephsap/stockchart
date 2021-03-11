@@ -4,15 +4,7 @@ import { formatDate } from '../../lib/utils';
 import SearchForm from './SearchForm';
 import BuyQuote from './BuyQuote';
 
-// http://localhost:3001/stockPrices?q=aapl&date=1/4/17
-// this one returns data for both tickers
-// http://localhost:3001/stockPrices/?Name=WYNN&Name=AAPL
-// http://localhost:3001/stockPrices/?Name=WYNN&Name=AAPL&date=1/4/17
-
-// http://localhost:3001/stockPrices/?_sort=date&_order=asc
-// http://localhost:3001/stockPrices/?_sort=Name&_order=desc
-
-const SearchContainer = (props) => {
+const SearchContainer = () => {
   const [searchResults, setSearchResults] = useState({});
   const [buySellDate, setBuySellDate] = useState(null);
   const [hasErrorSearch, setHasErrorSearch] = useState(false);
@@ -27,7 +19,7 @@ const SearchContainer = (props) => {
       );
 
       const resultsJSON = await results.json();
-      console.log(resultsJSON, 'hihih');
+
       if (resultsJSON.length === 0) {
         setHasErrorSearch(true);
         return;
@@ -54,7 +46,7 @@ const SearchContainer = (props) => {
       </Grid>
       <Grid item xs={12} md={8}>
         {Object.keys(searchResults).length > 0 && (
-          <BuyQuote searchResults={searchResults} {...props} />
+          <BuyQuote searchResults={searchResults} />
         )}
       </Grid>
     </Grid>

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import {
   Button,
@@ -34,7 +35,6 @@ const BuyConfirmDialog = ({ open, handleClose, orderData }) => {
         dispatch(decrementByAmount(orderTotal));
       }
     } catch (error) {
-      // setHasErrorSearch(true);
       setIsLoading(false);
       console.error(error);
     }
@@ -68,6 +68,18 @@ const BuyConfirmDialog = ({ open, handleClose, orderData }) => {
       </Dialog>
     </div>
   );
+};
+
+BuyConfirmDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  orderData: PropTypes.shape({
+    date: PropTypes.string.isRequired,
+    price: PropTypes.string.isRequired,
+    ticker: PropTypes.string.isRequired,
+    shareQuantity: PropTypes.string.isRequired,
+    orderTotal: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default BuyConfirmDialog;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   Button,
   Dialog,
@@ -98,5 +99,20 @@ const SellDialog = ({
     )}
   </>
 );
+
+SellDialog.defaultProps = {
+  stockToSell: null,
+  sellPrice: null,
+};
+
+SellDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  stockToSell: PropTypes.object,
+  formik: PropTypes.object.isRequired,
+  handleSellSubmit: PropTypes.func.isRequired,
+  handleGetSellPrice: PropTypes.func.isRequired,
+  sellPrice: PropTypes.string,
+};
 
 export default SellDialog;
