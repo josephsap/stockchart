@@ -1,3 +1,14 @@
+## Setup instructions, by Joe. ##
+
+1. Clone the repo to your machine. 
+2. `npm install`
+3. Run `npm start`
+4. Open a new terminal window and run `npm run server`
+5. Open `localhost:3000` in a browser to see the front end of the app. 
+6. `localhost:3001` is the API.
+
+
+
 # Front End Homework - Stock Market Simulator #
 
 ## Procedure ##
